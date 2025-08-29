@@ -1,0 +1,23 @@
+{
+  "name": "discord-bot-docs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Documentation for Discord Bot Project",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "serve": "vitepress serve"
+  },
+  "devDependencies": {
+    "vitepress": "1.0.0-rc.31"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "typescript",
+    "documentation"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
