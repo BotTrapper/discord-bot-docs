@@ -12,7 +12,7 @@ export default {
       { text: 'Getting Started', link: '/getting-started' },
       { text: 'Installation', link: '/installation' },
       { text: 'Changelog', link: '/changelog' },
-      { text: 'Dashboard', link: 'http://localhost:3000', target: '_blank' }
+      { text: 'Dashboard', link: 'https://dashboard.bottrapper.me', target: '_blank' }
     ],
     
     sidebar: [

@@ -71,7 +71,7 @@ docker-compose ps
 ```
 
 Nach dem Start sind folgende Services verfügbar:
-- **Dashboard**: http://localhost:3000
+- **Dashboard**: https://dashboard.bottrapper.me (Live) / http://localhost:3000 (Dev)
 - **API**: http://localhost:3001
 - **Health Check**: http://localhost:3001/api/health
 
@@ -97,7 +97,7 @@ Prüfen Sie, ob alles funktioniert:
 
 1. **Bot Status**: Der Bot sollte online in Ihrem Discord Server sein
 2. **Slash Commands**: Tippen Sie `/` in einem Kanal - Commands sollten erscheinen
-3. **Dashboard**: Öffnen Sie http://localhost:3000 - sollte laden ohne Fehler
+3. **Dashboard**: Öffnen Sie https://dashboard.bottrapper.me (oder http://localhost:3000 in Dev) - sollte laden ohne Fehler
 4. **API**: Besuchen Sie http://localhost:3001/api/health - sollte `{"status":"OK"}` zeigen
 
 ## 📚 Nächste Schritte
