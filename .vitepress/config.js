@@ -4,6 +4,12 @@ export default {
   title: 'BotTrapper',
   description: 'Discord Bot Management System',
   
+  vite: {
+    define: {
+      'import.meta.env.VITE_API_URL': JSON.stringify('https://api.bottrapper.me')
+    }
+  },
+  
   themeConfig: {
     logo: '/logo.png',
     

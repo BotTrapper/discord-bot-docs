@@ -13,8 +13,8 @@ const error = ref(null)
 
 const fetchChangelog = async () => {
   try {
-    // API-Endpunkt für Changelog (anpassbar je nach Deployment)
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+    // API-Endpunkt für Changelog (Production)
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://api.bottrapper.me'
     const response = await fetch(`${apiUrl}/api/changelog`)
     
     if (!response.ok) {
