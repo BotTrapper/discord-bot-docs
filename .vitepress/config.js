@@ -1,6 +1,6 @@
 export default {
   ignoreDeadLinks: true,
-  base: '/discord-bot-docs/',
+  base: '/',
   title: 'BotTrapper',
   description: 'Discord Bot Management System',
   
@@ -55,6 +55,13 @@ export default {
         ]
       },
       {
+        text: 'Legal',
+        items: [
+          { text: 'Terms of Service', link: '/tos' },
+          { text: 'Privacy Policy', link: '/dataprivacy' }
+        ]
+      },
+      {
         text: 'Updates',
         items: [
           { text: 'Changelog', link: '/changelog' }
@@ -67,21 +74,13 @@ export default {
     ],
     
     footer: {
-      message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2025 Julscha'
+      message: 'Released under the MIT License. | <a href="/tos">Terms of Service</a> | <a href="/dataprivacy">Privacy Policy</a>',
+      copyright: 'Copyright © 2025 BotTrapper'
     },
     
     editLink: {
       pattern: 'https://github.com/BotTrapper/discord-bot/edit/main/discord-bot-docs/:path',
       text: 'Edit this page on GitHub'
-    },
-    
-    lastUpdated: {
-      text: 'Updated at',
-      formatOptions: {
-        dateStyle: 'full',
-        timeStyle: 'medium'
-      }
     }
   }
 };

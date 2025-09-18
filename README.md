@@ -1,249 +1,130 @@
-# Discord Bot Documentation
+# BotTrapper Documentation
 
-📚 Offizielle Dokumentation für den TypeScript Discord Bot mit React Dashboard.
+📚 Official documentation for BotTrapper Discord bot management system, including Terms of Service and Privacy Policy.
 
-## 🌐 Live-Dokumentation
+## 🌐 Live Documentation
 
-Die Dokumentation ist verfügbar unter: **[https://yourusername.github.io/discord-bot-docs](https://yourusername.github.io/discord-bot-docs)**
+Documentation is available at: **[https://bottrapper.me/](https://bottrapper.me/)**
 
-## 🚀 Lokale Entwicklung
+## 🚀 Local Development
 
 ```bash
-# Dependencies installieren
+# Install dependencies
 npm install
 
-# Entwicklungsserver starten
+# Start development server
 npm run dev
 
-# Dokumentation lokal ansehen
+# View documentation locally
 open http://localhost:5173
 ```
 
-## 📁 Struktur
+## 🐳 Docker Deployment
+
+### Build and Deploy
+
+```bash
+# Build the Docker image
+docker build -t bottrapper-docs .
+
+# Run the container
+docker run -p 80:80 --name bottrapper-docs bottrapper-docs
+```
+
+### Using Docker Compose
+
+```bash
+# Production deployment
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+### Environment Variables
+
+The documentation can be configured with the following environment variables:
+
+- `VITE_API_URL`: API base URL (default: https://api.bottrapper.me)
+
+## 📁 Structure
 
 ```
-docs/
+discord-bot-docs/
 ├── .vitepress/
-│   ├── config.ts          # VitePress Konfiguration
+│   ├── config.js          # VitePress Configuration
 │   └── theme/             # Custom Theme (optional)
-├── public/                # Statische Assets
+├── public/                # Static Assets
 │   ├── favicon.ico
 │   └── logo.png
-├── api/                   # API Dokumentation
+├── api/                   # API Documentation
 ├── commands/              # Bot Commands Guide
 ├── dashboard/             # Dashboard Guide
 ├── deployment/            # Deployment Guide
-├── development/           # Development Guide
-├── getting-started.md     # Erste Schritte
+├── tos.md                 # Terms of Service
+├── dataprivacy.md         # Privacy Policy
+├── getting-started.md     # Getting Started
 ├── installation.md        # Installation Guide
-└── index.md              # Startseite
+├── changelog.md           # Changelog
+└── index.md              # Homepage
 ```
 
-## 🔧 Als separates Repository einrichten
+## � Legal Pages
 
-### 1. Neues Repository erstellen
+The documentation includes German legal pages for GDPR compliance:
+
+- **Terms of Service**: `/tos` - Nutzungsbedingungen
+- **Privacy Policy**: `/dataprivacy` - Datenschutzerklärung
+
+These pages are also integrated into the BotTrapper dashboard and accessible via Discord commands.
+
+## 🔗 Production URLs
+
+- Documentation: `https://bottrapper.me/`
+- Terms of Service: `https://bottrapper.me/tos`
+- Privacy Policy: `https://bottrapper.me/dataprivacy`
+
+## 🏥 Health Check
+
+The Docker container includes a health check endpoint:
 
 ```bash
-# Neues Repository auf GitHub erstellen: discord-bot-docs
-git clone https://github.com/yourusername/discord-bot-docs.git
-cd discord-bot-docs
+# Check container health
+docker exec bottrapper-docs wget --no-verbose --tries=1 --spider http://localhost/
 ```
 
-### 2. Dokumentation kopieren
+## 🎨 Customization
 
-```bash
-# Alle Dateien aus dem docs/ Ordner kopieren
-cp -r /path/to/discord-project/docs/* .
+The documentation includes:
 
-# .github/workflows Ordner an die richtige Stelle verschieben
-mkdir -p .github/workflows
-mv .github/workflows/deploy-docs.yml .github/workflows/
-```
+- Discord-themed colors and styling
+- Mobile-responsive design
+- Search functionality
+- Legal footer with links to Terms and Privacy Policy
+- Automated last-update timestamps
 
-### 3. GitHub Pages aktivieren
+## � Integration with BotTrapper
 
-1. Gehen Sie zu den Repository-Einstellungen
-2. Scrollen Sie zu "Pages" 
-3. Source: "GitHub Actions" auswählen
-4. Die Dokumentation wird automatisch bei jedem Push deployed
+The documentation is integrated with the main BotTrapper ecosystem:
 
-### 4. Links aktualisieren
+### Discord Bot Commands
+- `/tos` - Shows Terms of Service embed with link
+- `/data` - Shows Privacy Policy embed with link
 
-Passen Sie in `.vitepress/config.ts` an:
+### Dashboard Integration
+- Footer links to legal pages
+- Public routes for `/tos` and `/dataprivacy`
 
-```typescript
-// Base URL für GitHub Pages
-base: '/discord-bot-docs/',
+### API Integration
+- Documentation for all REST API endpoints
+- OAuth2 setup instructions
+- Feature management guides
 
-// GitHub Links
-socialLinks: [
-  { icon: 'github', link: 'https://github.com/yourusername/discord-bot-docs' }
-],
+## 📝 Contributing
 
-editLink: {
-  pattern: 'https://github.com/yourusername/discord-bot-docs/edit/main/:path',
-  text: 'Edit this page on GitHub'
-}
-```
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test locally with `npm run dev`
+5. Create a Pull Request
 
-## 📝 Inhalte hinzufügen
+## 📄 License
 
-### Neue Seite erstellen
-
-```bash
-# Neue Markdown-Datei erstellen
-touch new-page.md
-
-# In .vitepress/config.ts zur Sidebar hinzufügen
-{
-  text: 'Neue Seite',
-  link: '/new-page'
-}
-```
-
-### Code-Beispiele
-
-```markdown
-# Syntax Highlighting
-\`\`\`typescript
-// TypeScript Code
-const bot = new Client({ intents: [GatewayIntentBits.Guilds] });
-\`\`\`
-
-# Bash Commands
-\`\`\`bash
-npm install
-npm start
-\`\`\`
-```
-
-### Komponenten
-
-```markdown
-# Infokästen
-::: info
-Dies ist eine Info-Box
-:::
-
-::: warning
-Dies ist eine Warnung
-:::
-
-::: danger
-Dies ist ein Fehler/Gefahr Hinweis
-:::
-
-# Details/Zusammenklappbar
-::: details Click me to view the code
-\`\`\`js
-console.log('Hello, VitePress!')
-\`\`\`
-:::
-```
-
-## 🎨 Customizing
-
-### Theme anpassen
-
-```typescript
-// .vitepress/config.ts
-export default defineConfig({
-  themeConfig: {
-    // Logo
-    logo: '/logo.png',
-    
-    // Farben
-    primaryColor: '#5865F2', // Discord Blau
-    
-    // Footer
-    footer: {
-      message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2025 Your Name'
-    }
-  }
-})
-```
-
-### Custom CSS
-
-```css
-/* .vitepress/theme/custom.css */
-:root {
-  --vp-c-brand-1: #5865F2;
-  --vp-c-brand-2: #4752C4;
-  --vp-c-brand-3: #3C45A5;
-}
-
-.VPNavBar .title {
-  font-weight: bold;
-}
-```
-
-## 🔗 Integration mit Hauptprojekt
-
-Verlinken Sie die Dokumentation in den anderen Repositories:
-
-### Discord Bot Repository
-```markdown
-# README.md
-## 📚 Dokumentation
-
-Vollständige Dokumentation: [Discord Bot Docs](https://yourusername.github.io/discord-bot-docs)
-```
-
-### Frontend Repository
-```markdown
-# README.md
-## 📖 Handbuch
-
-Dashboard-Anleitung: [Dashboard Guide](https://yourusername.github.io/discord-bot-docs/dashboard/)
-```
-
-## 🚀 Deployment
-
-### Automatisch (GitHub Actions)
-
-Die Dokumentation wird automatisch deployed bei:
-- Push to `main` branch
-- Änderungen in `docs/**` Dateien
-
-### Manuell
-
-```bash
-# Bauen
-npm run build
-
-# Preview lokal
-npm run preview
-
-# Build-Ordner uploaden
-# .vitepress/dist/ enthält die statischen Dateien
-```
-
-## 📊 Analytics (Optional)
-
-```typescript
-// .vitepress/config.ts
-export default defineConfig({
-  head: [
-    // Google Analytics
-    ['script', { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID' }],
-    ['script', {}, `window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'GA_MEASUREMENT_ID');`]
-  ]
-})
-```
-
-## 🤝 Contributing
-
-1. Fork das Repository
-2. Erstellen Sie einen Feature Branch
-3. Machen Sie Ihre Änderungen
-4. Testen Sie lokal mit `npm run dev`
-5. Erstellen Sie einen Pull Request
-
-## 📄 Lizenz
-
-MIT License - Details siehe [LICENSE](LICENSE)
+MIT License - see [LICENSE](LICENSE) for details

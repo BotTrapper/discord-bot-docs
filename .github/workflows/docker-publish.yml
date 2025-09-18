@@ -1,0 +1,103 @@
+name: Documentation - Docker Build & Publish
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: bottrapper/discord-bot-docs
+
+jobs:
+  build-and-push-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build and push Documentation Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        build-args: |
+          VITE_API_URL=https://api.bottrapper.me
+
+    # Make package public after push
+    - name: Make documentation package public
+      run: |
+        curl -X PATCH \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          https://api.github.com/orgs/BotTrapper/packages/container/discord-bot-docs \
+          -d '{"visibility":"public"}' || echo "Package visibility update failed (might already be public)"
+
+    - name: Test Documentation Docker image
+      run: |
+        docker run --rm -d --name docs-test -p 8080:80 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+        sleep 15
+        curl -f http://localhost:8080/ || (echo "Health check failed" && exit 1)
+        curl -f http://localhost:8080/tos || (echo "ToS page check failed" && exit 1)
+        curl -f http://localhost:8080/dataprivacy || (echo "Privacy page check failed" && exit 1)
+        docker stop docs-test
+
+    - name: Generate deployment artifact
+      env:
+        GITHUB_SHA: ${{ github.sha }}
+      run: |
+        echo "DISCORD_DOCS_IMAGE_TAG=${GITHUB_SHA}" > docs-deployment.env
+
+    - name: Upload deployment artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: docs-deployment-env
+        path: docs-deployment.env
+
+    - name: Deploy Summary
+      run: |
+        echo "## 📚 Documentation Deployment Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ **Docker Image Built & Pushed:** \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main\`" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🔗 **Available Endpoints:**" >> $GITHUB_STEP_SUMMARY
+        echo "- Documentation: https://bottrapper.me/" >> $GITHUB_STEP_SUMMARY
+        echo "- Terms of Service: https://bottrapper.me/tos" >> $GITHUB_STEP_SUMMARY  
+        echo "- Privacy Policy: https://bottrapper.me/dataprivacy" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "🐳 **Docker Run Command:**" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+        echo "docker run -p 80:80 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main" >> $GITHUB_STEP_SUMMARY
+        echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
